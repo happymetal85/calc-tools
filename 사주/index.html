@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>사주 풀이</title>
+<meta name="description" content="생년월일시로 사주 원국·오행·십신·격국·용신·대운·세운을 계산하고 적천수·자평진전·궁통보감의 틀로 풀이합니다.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@300;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500&display=swap">
+<link rel="stylesheet" href="css/tokens.css?v=2">
+<link rel="stylesheet" href="css/app.css?v=2">
+</head>
+<body>
+<header class="top">
+  <div class="in">
+    <h1 class="title">사주 풀이</h1>
+    <span class="tag">만세력 계산 + 고전 명리 해설</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="panel in" id="form">
+    <h3>태어난 때</h3>
+    <div class="field"><label>성별</label>
+      <div class="seg" id="gender"><button type="button" data-v="M" class="active">남자</button><button type="button" data-v="F">여자</button></div>
+    </div>
+    <div class="field"><label>달력</label>
+      <div class="seg" id="cal"><button type="button" data-v="solar" class="active">양력</button><button type="button" data-v="lunar">음력</button><button type="button" data-v="leap">음력 윤달</button></div>
+    </div>
+    <div class="field"><label>생년월일</label>
+      <div class="row3">
+        <input type="number" id="y" min="1900" max="2100" placeholder="년" inputmode="numeric">
+        <input type="number" id="m" min="1" max="12" placeholder="월" inputmode="numeric">
+        <input type="number" id="d" min="1" max="31" placeholder="일" inputmode="numeric">
+      </div>
+      <div class="help">1900년부터 2100년까지</div>
+    </div>
+    <div class="field"><label>태어난 시각</label>
+      <div class="row2">
+        <input type="number" id="h" min="0" max="23" placeholder="시 (0~23)" inputmode="numeric">
+        <input type="number" id="mi" min="0" max="59" placeholder="분" inputmode="numeric">
+      </div>
+    </div>
+    <div class="field check"><label><input type="checkbox" id="unk"> 태어난 시각을 모름 (시주 없이 풀이)</label></div>
+    <div class="field"><label>출생지</label>
+      <select id="city"></select>
+      <div class="help">경도로 진태양시를 보정합니다 (서울 약 -32분)</div>
+    </div>
+    <details class="adv"><summary>세부 설정</summary>
+      <div class="field" style="margin-top:8px"><label>시간 보정</label>
+        <select id="corr"><option value="lon">경도 보정 (기본)</option><option value="eot">경도 + 균시차 보정</option><option value="none">보정 없음 (시계 시각 그대로)</option></select>
+      </div>
+      <div class="field"><label>23시 이후 출생</label>
+        <select id="zi"><option value="next">다음 날 일주로 봄 (자시 기준)</option><option value="same">당일 일주로 봄 (야자시)</option></select>
+      </div>
+      <div class="field check"><label><input type="checkbox" id="dst" checked> 서머타임 시행 기간이면 자동으로 1시간 되돌림 (1948~1960, 1987~1988)</label></div>
+    </details>
+    <button class="btn primary" id="go" type="button">사주 풀이 보기</button>
+    <div class="err" id="err" hidden></div>
+    <div class="btns"><button class="btn" id="share" type="button">링크 복사</button><button class="btn" id="print" type="button">인쇄</button></div>
+  </section>
+
+  <section class="panel out" id="out">
+    <div class="empty"><div class="big">생년월일시를 넣으면 사주를 풀이합니다</div>양력·음력 모두 되고, 시각을 모르면 세 기둥으로 풉니다.</div>
+  </section>
+</div>
+
+<footer class="foot">
+  절기·삭은 천문 계산식(Meeus)으로 구했고 한국천문연구원 공표값과 1분 이내로 맞습니다. 해설은 적천수·자평진전·궁통보감·삼명통회의 틀을 따라 새로 쓴 글이며, 참고용입니다.
+</footer>
+
+<script src="js/astro.js?v=3"></script>
+<script src="js/manse.js?v=3"></script>
+<script src="js/saju.js?v=3"></script>
+<script src="js/text.js?v=3"></script>
+<script src="js/app.js?v=3"></script>
+</body>
+</html>

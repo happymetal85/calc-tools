@@ -1,0 +1,146 @@
+/* ==========================================================================
+   코웨이엔텍 Tide 토큰 v1.1 — Claude Design / 아티팩트용
+   그대로 복사해 아트보드 최상단에 넣는다. 값을 바꾸지 않는다.
+   근거·판정 이력: ../STYLE-FOUNDATION.md
+   ========================================================================== */
+
+/* --- 라이트 (기본) ------------------------------------------------------- */
+:root {
+  /* 중립 — 문서의 95% */
+  --ink:        #23282D;   /* 본문           14.9:1 */
+  --ink-soft:   #646E76;   /* 캡션·보조        5.2:1 */
+  --line:       #DCE1E4;   /* 괘선                  */
+  --surface:    #F2F5F7;   /* 표 헤더·박스 배경      */
+  --paper:      #FFFFFF;   /* 기본 배경             */
+
+  /* 브랜드 — 한 화면에 한 곳 */
+  --brand:      #00A4E0;   /* 로고 재현 전용. 문서 요소에 쓰지 않는다  2.84:1 */
+  --brand-key:  #0092C8;   /* 차트 막대·굵은 도형·채움   3.5:1 · 텍스트 금지 */
+  --brand-ink:  #007FAD;   /* 강조 텍스트·링크·아이콘    4.5:1 */
+  --brand-deep: #00678C;   /* 대형 KPI 숫자·헤드라인 포인트  6.3:1 */
+  --brand-fill: #D2EFFA;   /* 옅은 채움·하이라이트 배경 */
+
+  /* 의미색 — 상태 표시 전용. 강조 용도로 전용하지 않는다 */
+  --danger:     #E0301E;   /* 4.6:1 · 텍스트 가능 */
+  --warn:       #EB8C00;   /* 2.5:1 · 채움·마커 전용, 텍스트 금지, 형태 병행 필수 */
+  --ok:         #008845;   /* 4.6:1 */
+  --danger-fill:#F5C9C4;   /* 채움 전용 — 위 라벨은 --danger-on-fill */
+  --danger-on-fill:#AE2113; /* danger-fill 위 텍스트  4.6:1 */
+  --warn-ink:   #AD6500;   /* 주의 라벨 텍스트용  4.5:1 — warn 원색은 텍스트 금지 */
+
+  /* 차트 — 시안 사다리(주인공·순차) */
+  --c1: #0092C8;  --c2: #4BC0EB;  --c3: #8DD7F2;  --c4: #D2EFFA;
+  /* 차트 — 그레이 사다리(비교 대상·맥락) */
+  --g1: #7D7D7D;  --g2: #A1A8B3;  --g3: #CBD1D6;  --g4: #DFE3E6;
+
+  /* 2계열 짝 — 둘 다 유채색이어야 할 때만. 적록 구분 21.9 / 24.2 */
+  --pair-navy:  #09528E;
+
+  /* 범주형 4색 — 최소 색차 10.4로 색만으로는 부족하다. 직접 라벨링 [필수] */
+  --cat1: #09528E;  --cat2: #A8473A;  --cat3: #0F81CE;  --cat4: #239DD3;
+
+  /* 발산형 — 중간점 L*95 대칭. 양끝 적록 구분 11.6 / 7.8 → 값 라벨 [필수] */
+  --d-3: #006EAA; --d-2: #1B8ABB; --d-1: #74A6C8;
+  --d-0: #ECF1F6;
+  --d1:  #C79581; --d2:  #B47054; --d3:  #9C4C2C;
+
+  /* 타이포 — 넷마블체가 있으면 그것을, 없으면 Gothic A1(Google Fonts) */
+  --font-display: "netmarble Bold", "Gothic A1", "Noto Sans KR", sans-serif;
+  --font-mid:     "netmarble Medium", "Gothic A1", "Noto Sans KR", sans-serif;
+  --font-light:   "netmarble Light", "Gothic A1", "Noto Sans KR", sans-serif;
+  --font-body:    Pretendard, "Noto Sans KR", "Malgun Gothic", sans-serif;
+
+  /* 타입 스케일 — 17px 기준 · 비율 1.25 */
+  --t-caption: 13px;  --t-body: 17px;  --t-sub: 21px;
+  --t-section: 27px;  --t-page: 34px;  --t-cover: 42px;
+
+  /* 간격 — 4의 배수. 그룹 사이 간격은 그룹 안 간격의 2배 */
+  --s1: 4px; --s2: 8px; --s3: 16px; --s4: 24px; --s5: 32px; --s6: 48px;
+  --radius: 4px;
+}
+
+/* --- 다크 (시스템 설정) -------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink:        #E6EAEC;
+    --ink-soft:   #9BA4AA;
+    --line:       #333A3E;
+    --surface:    #23282D;
+    --paper:      #1A1D1F;
+
+    --brand:      #4DCBF0;   /* 다크에서는 밝힌 시안  9.0:1 */
+    --brand-key:  #3AC0EA;
+    --brand-ink:  #4DCBF0;
+    --brand-deep: #7FDAF5;
+    --brand-fill: #10323F;
+
+    --danger:     #F0604F;
+    --warn:       #F0A030;
+    --ok:         #40AF68;
+
+    --c1: #1EBCFF; --c2: #299ACF; --c3: #2B79A1; --c4: #446D87;
+    --g1: #A7B2BB; --g2: #899299; --g3: #6C7378; --g4: #64696D;
+
+    --pair-navy: #7AACE5;
+    --cat1: #4169A0; --cat2: #AF6E62; --cat3: #7AACE5; --cat4: #8DD1FD;
+
+    --d-3: #4EBBF5; --d-2: #4A99C5; --d-1: #437898;
+    --d-0: #43474B;
+    --d1:  #956755; --d2:  #C18168; --d3:  #EE9D7C;
+  }
+}
+
+/* --- 다크 (명시 선택) — 토글이 시스템 설정을 이긴다 ---------------------- */
+:root[data-theme="dark"] {
+  --ink:        #E6EAEC;
+  --ink-soft:   #9BA4AA;
+  --line:       #333A3E;
+  --surface:    #23282D;
+  --paper:      #1A1D1F;
+
+  --brand:      #4DCBF0;
+  --brand-key:  #3AC0EA;
+  --brand-ink:  #4DCBF0;
+  --brand-deep: #7FDAF5;
+  --brand-fill: #10323F;
+
+  --danger:     #F0604F;
+  --warn:       #F0A030;
+  --ok:         #40AF68;
+
+  --c1: #1EBCFF; --c2: #299ACF; --c3: #2B79A1; --c4: #446D87;
+  --g1: #A7B2BB; --g2: #899299; --g3: #6C7378; --g4: #64696D;
+
+  --pair-navy: #7AACE5;
+  --cat1: #4169A0; --cat2: #AF6E62; --cat3: #7AACE5; --cat4: #8DD1FD;
+
+  --d-3: #4EBBF5; --d-2: #4A99C5; --d-1: #437898;
+  --d-0: #43474B;
+  --d1:  #956755; --d2:  #C18168; --d3:  #EE9D7C;
+}
+
+/* --- 기본 조판 ----------------------------------------------------------- */
+body {
+  margin: 0;
+  background: var(--paper);      /* 반드시 명시 — 투명하면 호스트 배경이 비친다 */
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  font-weight: 700;              /* Gothic A1 대체 시 굵기를 결정한다 */
+  line-height: 1.3;              /* 표시용은 1.25–1.35로 좁힌다 */
+  text-wrap: balance;
+}
+.mid   { font-family: var(--font-mid);   font-weight: 500 }
+.light { font-family: var(--font-light); font-weight: 300 }  /* 28px 이상에서만 */
+
+/* 숫자 — 넷마블체는 이미 고정폭, Pretendard·Gothic A1은 지정이 필요하다 */
+table, .num, .kpi { font-variant-numeric: tabular-nums }
+
+/* 넓은 요소는 자기 안에서만 가로 스크롤 — 페이지 본문은 가로로 밀리지 않는다 */
+.scroll-x { overflow-x: auto }

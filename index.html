@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>계산기 모음</title>
+<meta name="description" content="생활·금융 계산기 74개와 사주 풀이. 서버 없이 브라우저에서 바로 도는 정적 웹.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@300;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+:root{
+  --ink:#23282D; --ink-soft:#646E76; --line:#DCE1E4; --surface:#F2F5F7; --paper:#FFFFFF;
+  --brand-key:#0092C8; --brand-ink:#007FAD; --brand-deep:#00678C; --brand-fill:#D2EFFA;
+}
+@media (prefers-color-scheme:dark){
+  :root{ --ink:#E6EAEC; --ink-soft:#9BA4AA; --line:#333A3E; --surface:#22262A; --paper:#1A1D1F;
+    --brand-key:#4DCBF0; --brand-ink:#4DCBF0; --brand-deep:#8DD7F2; --brand-fill:#1E3A46; }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:Pretendard,"Noto Sans KR","Malgun Gothic",sans-serif;font-weight:400;
+  font-size:17px;line-height:1.7;-webkit-text-size-adjust:100%}
+.wrap{max-width:760px;margin:0 auto;padding:56px 24px 80px}
+h1,h2,h3{font-family:"netmarble Bold","Gothic A1","Noto Sans KR",sans-serif;font-weight:700;
+  line-height:1.3;letter-spacing:-.01em;margin:0}
+h1{font-size:34px}
+h2{font-size:21px;margin:0 0 4px}
+.lead{color:var(--ink-soft);margin:12px 0 0;font-size:17px}
+.meta{color:var(--ink-soft);font-size:13px;margin-top:8px}
+.cards{display:grid;gap:16px;margin:40px 0 0}
+@media(min-width:640px){.cards{grid-template-columns:1fr 1fr}}
+.card{display:block;padding:24px;border:1px solid var(--line);border-radius:10px;
+  background:var(--surface);color:inherit;text-decoration:none;transition:border-color .15s}
+.card:hover,.card:focus-visible{border-color:var(--brand-ink)}
+.card .n{font-family:"netmarble Bold","Gothic A1",sans-serif;font-weight:700;
+  font-size:34px;color:var(--brand-deep);line-height:1.1;font-variant-numeric:tabular-nums}
+.card .n small{font-size:17px;font-weight:500;color:var(--ink-soft)}
+.card p{margin:8px 0 0;font-size:15px;color:var(--ink-soft);line-height:1.6}
+.card .go{margin-top:16px;font-size:15px;color:var(--brand-ink);font-weight:500}
+section{margin-top:48px;padding-top:32px;border-top:1px solid var(--line)}
+ul{margin:12px 0 0;padding-left:20px}
+li{margin:6px 0;font-size:15px;color:var(--ink-soft)}
+li b{color:var(--ink);font-weight:500}
+a{color:var(--brand-ink)}
+footer{margin-top:48px;padding-top:24px;border-top:1px solid var(--line);
+  font-size:13px;color:var(--ink-soft)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;background:var(--brand-fill);
+  color:var(--brand-deep);font-size:13px;font-weight:500}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>한 손으로 끝내는 계산기</h1>
+  <p class="lead">집·급여·세금·노후를 숫자로 확인하는 도구 74개와, 사주 원국을 세워 풀이하는 페이지입니다. 서버도 회원가입도 없이 브라우저에서 바로 돕니다.</p>
+  <p class="meta">2026년 9월 기준 법령·요율 반영 · 입력값은 기기에만 남습니다</p>
+
+  <div class="cards">
+    <a class="card" href="한손도구/">
+      <div class="n">74<small>개</small></div>
+      <h2>계산기 모음</h2>
+      <p>내 집 마련, 전세·월세 비교, 실수령액, 양도세, 은퇴 자금, 또래 백분위, 운세까지. 값을 한 번 넣으면 다른 계산기가 이어받습니다.</p>
+      <div class="go">계산기 열기 →</div>
+    </a>
+    <a class="card" href="사주/">
+      <div class="n">사주<small> 풀이</small></div>
+      <h2>명리 원국과 해설</h2>
+      <p>절기와 음력을 직접 계산해 네 기둥을 세우고, 십신·격국·용신·대운을 고전의 틀로 풀이합니다.</p>
+      <div class="go">사주 열기 →</div>
+    </a>
+  </div>
+
+  <section>
+    <h2>무엇이 들어 있나</h2>
+    <ul>
+      <li><b>부동산 11</b> — 내 집 마련 시뮬레이터(현행·개정안 전환), 전세·월세·반전세, 취득세, 양도세, 종부세, 대출 한도</li>
+      <li><b>급여·소득 14</b> — 실수령액, 4대보험, 연말정산, 퇴직금, 이직 제안 비교, 실업급여</li>
+      <li><b>금융·투자 15</b> — 1억 만들기, 대출 갈아타기, 조기상환, 예금·ISA·연금 비교, 그때 샀더라면</li>
+      <li><b>내 재무 7</b> — 재무 대시보드, 결혼 자금, 양육비, 구독료, 또래 백분위, 돈 성향 16유형</li>
+      <li><b>주식·세금 6 · 단위변환 7 · 유용한 도구 14</b> — 증여·상속, 단위 변환, 나이·D-day, 글자수, 운세·궁합·택일</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>읽기 전에</h2>
+    <ul>
+      <li>세금·대출 결과는 <b>추정치</b>입니다. 실제 신고·심사는 개별 요건에 따라 달라지니 최종 판단은 세무사·금융기관에 확인하세요.</li>
+      <li>발표됐지만 아직 시행되지 않은 개정안은 <span class="tag">개정안</span> 으로 따로 표시하고 전환해서 봅니다.</li>
+      <li>운세·궁합·타로·돈 성향은 재미로 보는 것입니다.</li>
+      <li>입력한 값은 서버로 가지 않고 브라우저 저장소에만 남습니다.</li>
+    </ul>
+  </section>
+
+  <footer>
+    계산기 구성은 <a href="https://www.codingmachine.co.kr/" rel="noopener">코딩머신 한손도구</a>를 참고해 새로 만들었고, 원본에 없는 도구를 더했습니다.
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+# Claude Code 로컬 설정 (개발용 서버 포트 등)
+.claude/
+
+# OS·에디터
+Thumbs.db
+desktop.ini
+.DS_Store
+*.swp
+.vscode/
+.idea/
+
+# 의존성·빌드 (현재는 없지만 대비)
+node_modules/
+dist/
