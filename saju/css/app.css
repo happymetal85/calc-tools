@@ -144,7 +144,8 @@ ul.list li b { font-weight: 500; }
   table.won td.gz .h { font-size: 30px; }
   .top .tag { display: none; }
   /* 좁은 화면에서는 설명 칸을 넓혀 줄바꿈을 줄인다 */
-  dl.kv { grid-template-columns: 68px 1fr; gap: 3px 8px; }
+  dl.kv { grid-template-columns: auto minmax(0, 1fr); gap: 3px 8px; }
+  dl.kv dt { white-space: nowrap; }
   .out h2 { margin: 24px 0 10px; padding-top: 18px; }
   .out h4 { margin: 14px 0 5px; }
 }

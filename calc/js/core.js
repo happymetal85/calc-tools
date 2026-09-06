@@ -108,7 +108,7 @@
   HT.kpis = (items) => HT.el('div', { class: 'kpis' }, items.map(([l, v, s]) => HT.kpi(l, v, s)));
   /* rows: [[label, value, cls?, hint?]] */
   /* 값이 숫자가 아니라 문장이면 좁은 화면에서 라벨 아래로 내려 쓰도록 표시해 둔다 */
-  const proseVal = (v) => typeof v === 'string' && v.replace(/[\d,.\s%·~\-+()]/g, '').length > 8;
+  const proseVal = (v) => { const t = typeof v === 'string' ? v : (v && v.nodeType ? v.textContent : ''); return t.replace(/[\d,.\s%·~\-+()]/g, '').length > 16; };
   HT.rows = (rows) => { const t = HT.el('table', { class: 'rows' }); rows.forEach(r => { if (!r) return; const [l, v, cls, hint] = r; const td1 = HT.el('td', {}, l); if (hint) td1.append(HT.el('span', { class: 'hint', html: hint })); t.append(HT.el('tr', { class: ((cls || '') + (proseVal(v) ? ' txt' : '')).trim() }, [td1, HT.el('td', {}, v)])); }); return t; };
   HT.table = (headers, rows, opts = {}) => { const t = HT.el('table', { class: 'grid' }); const th = HT.el('tr'); headers.forEach((h, i) => th.append(HT.el('th', { class: (opts.right || []).includes(i) ? 'r' : '' }, h))); t.append(HT.el('thead', {}, th));
     const tb = HT.el('tbody'); rows.forEach((r, ri) => { const tr = HT.el('tr', { class: opts.hi && opts.hi(r, ri) ? 'hi' : '' }); r.forEach((c, i) => tr.append(HT.el('td', { class: (opts.right || []).includes(i) ? 'r' : '' }, c))); tb.append(tr); }); t.append(tb);
