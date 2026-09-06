@@ -19,28 +19,48 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .side .cat.hidden { display: none; }
 .btn.menu-btn { display: none; }
 
-.main { padding: var(--s5) var(--s6); max-width: 1080px; }
+.main { padding: var(--s5) var(--s6); max-width: 1080px; min-width: 0; }
 .crumb { font-size: 13px; color: var(--ink-soft); margin-bottom: var(--s2); }
 .page-title { font-size: 28px; margin: 0 0 var(--s1); }
 .page-desc { color: var(--ink-soft); margin: 0 0 var(--s4); }
 
 /* 홈 */
-.home-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--s3); }
+.home-search { width: 100%; max-width: 420px; padding: 9px 12px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); margin: 0 0 var(--s3); }
+.home-search:focus { outline: 2px solid var(--brand-key); outline-offset: 0; border-color: var(--brand-key); }
+.home-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--s3); align-items: start; }
 .card { border: 1px solid var(--line); border-radius: 6px; padding: var(--s3); background: var(--paper); }
-.card h3 { font-size: 16px; margin: 0 0 var(--s2); }
-.card ul { list-style: none; margin: 0; padding: 0; }
+.card > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.card > summary::-webkit-details-marker { display: none; }
+.card > summary::after { content: "▾"; margin-left: auto; font-size: 12px; color: var(--ink-soft); }
+.card[open] > summary::after { content: "▴"; }
+.card h3 { font-size: 16px; margin: 0; }
+.card ul { list-style: none; margin: var(--s2) 0 0; padding: 0; }
 .card li a { display: block; padding: 3px 0; font-size: 14px; color: var(--ink); }
 .card li a:hover { color: var(--brand-ink); }
 .card .cnt { color: var(--ink-soft); font-weight: 400; font-size: 13px; margin-left: 6px; }
+.home-grid .hidden { display: none; }
+
+/* 결과 요약 띠 — 좁은 화면 전용 */
+.kpibar { position: fixed; left: 0; right: 0; top: 0; z-index: 20; display: none; align-items: center; gap: 10px;
+  padding: 7px 14px; background: var(--paper); border-bottom: 1px solid var(--line); box-shadow: 0 1px 8px rgba(0,0,0,.08); }
+.kpibar.on.past { display: flex; }
+.kpibar .t { flex: 1; min-width: 0; }
+.kpibar .l { display: block; font-size: 11px; color: var(--ink-soft); line-height: 1.3; }
+.kpibar .v { display: block; font-family: var(--font-mid); font-weight: 700; font-size: 18px; color: var(--brand-deep);
+  font-variant-numeric: tabular-nums; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kpibar .btn { flex: none; }
+@media (min-width: 901px) { .kpibar { display: none !important; } }
 
 /* 계산기 레이아웃 */
 .calc { display: grid; grid-template-columns: minmax(300px, 420px) 1fr; gap: var(--s4); align-items: start; }
+.calc > .panel { min-width: 0; }
 .panel { border: 1px solid var(--line); border-radius: 6px; padding: var(--s3) var(--s4); background: var(--paper); order: 1; }
 .panel.out { order: 2; }
 .panel h3 { font-size: 15px; margin: 0 0 var(--s3); font-family: var(--font-mid); font-weight: 500; color: var(--ink-soft); }
 .field { margin-bottom: 14px; }
 .field label { display: block; font-size: 13px; color: var(--ink-soft); margin-bottom: 4px; }
-.field .in { display: flex; align-items: center; gap: 6px; }
+.field .in { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.field .in > input, .field .in > select { flex: 1 1 0; min-width: 0; }
 .field input[type=text], .field input[type=number], .field input[type=date], .field input[type=time], .field select, .field textarea {
   width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); font-variant-numeric: tabular-nums; }
 .field input:focus, .field select:focus { outline: 2px solid var(--brand-key); outline-offset: 0; border-color: var(--brand-key); }
@@ -108,7 +128,7 @@ table.grid select { padding: 4px 6px; border: 1px solid var(--line); border-radi
 .alert { background: var(--surface); border-left: 3px solid var(--ink); padding: 10px 14px; font-size: 13px; color: var(--ink); margin: var(--s2) 0; }
 
 .chart { margin: var(--s3) 0; }
-.chart svg { width: 100%; height: auto; display: block; }
+.chart svg { width: 100%; max-width: 100%; height: auto; display: block; }
 .chart .cap { font-size: 12px; color: var(--ink-soft); margin-top: 4px; }
 .chart text { font-family: var(--font-body); }
 .empty { color: var(--ink-soft); font-size: 14px; padding: var(--s3) 0; }
@@ -154,6 +174,27 @@ textarea.out { width: 100%; min-height: 280px; padding: 10px; border: 1px solid 
   .calc { grid-template-columns: 1fr; }
   .clock { font-size: 40px; }
   .conv-grid { grid-template-columns: 1fr; }
+  /* 짧은 입력은 두 개씩 나란히 — 세로 길이를 줄인다 */
+  .calc > .panel:not(.out) { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; align-content: start; }
+  .calc > .panel:not(.out) > * { grid-column: 1 / -1; min-width: 0; }
+  .calc > .panel:not(.out) > .field[data-t="number"],
+  .calc > .panel:not(.out) > .field[data-t="check"],
+  .calc > .panel:not(.out) > .field[data-t="range"] { grid-column: auto; }
+  .field { margin-bottom: 10px; }
+  .field label { margin-bottom: 2px; }
+  .field input[type=text], .field input[type=number], .field input[type=date],
+  .field input[type=time], .field select, .field textarea { padding: 7px 9px; }
+  /* 긴 설명이 오른쪽 칸에 들어와도 가로로 삐져나가지 않게 */
+  .rows td:last-child { white-space: normal; word-break: keep-all; }
+  .scroll-x { min-width: 0; }
+  /* 칸이 많은 표는 표 안에서만 좌우로 넘긴다 — 페이지가 옆으로 밀리지 않게 */
+  table.grid { display: block; overflow-x: auto; }
+  /* 패널 여백을 줄여 가로 폭을 벌고, 대시보드 카드도 두 개씩 */
+  .panel { padding: var(--s3) 14px; }
+  .cards { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 10px; }
+  .dcard { padding: 10px 12px; }
+  .dcard .v { font-size: 19px; }
+  .dcard.hi .v { font-size: 22px; }
 }
 
 /* 택일 달력 */

@@ -55,6 +55,13 @@
   const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   HT.esc = esc;
 
+  /* 부드럽게 스크롤하되, 브라우저가 무시하면 그냥 이동한다 */
+  HT.scrollTo = (el, gap = 8) => {
+    const y = Math.max(0, window.scrollY + el.getBoundingClientRect().top - gap), from = window.scrollY;
+    try { window.scrollTo({ top: y, behavior: 'smooth' }); } catch (e) { window.scrollTo(0, y); }
+    setTimeout(() => { if (Math.abs(window.scrollY - from) < 4) window.scrollTo(0, y); }, 400);
+  };
+
   /* ---------- 입력 폼 ----------
      fields: { id, label, type: money|number|select|check|date|text|seg|range, value, unit, options:[[v,label]], help, min, max, step, show(v) }
      onChange(values) 는 값이 바뀔 때마다 호출. 반환: { values(), set(id,v), el(id), refresh() } */
@@ -69,7 +76,7 @@
     const refresh = () => { const v = values(); for (const f of fields) if (f.show) boxes[f.id].style.display = f.show(v) ? '' : 'none'; };
     const fire = () => { refresh(); onChange && onChange(values()); };
     for (const f of fields) {
-      const box = HT.el('div', { class: 'field' + (f.type === 'check' ? ' check' : '') }); boxes[f.id] = box;
+      const box = HT.el('div', { class: 'field' + (f.type === 'check' ? ' check' : ''), 'data-t': f.type || 'text' }); boxes[f.id] = box;
       let input;
       if (f.type === 'select') { input = HT.el('select', { id: f.id }); (f.options || []).forEach(([v, l]) => input.append(HT.el('option', { value: v }, l))); if (f.value != null) input.value = f.value; input.addEventListener('change', fire); }
       else if (f.type === 'seg') { input = HT.el('div', { class: 'seg', id: f.id }); input.dataset.value = f.value ?? f.options[0][0];
@@ -176,15 +183,73 @@
   HT.register = (def) => { HT.calcs.push(def); };
   HT.byId = (id) => HT.calcs.find(c => c.id === id);
   let cleanup = null;
+  const narrow = () => window.matchMedia('(max-width: 900px)').matches;
   function renderHome(main) {
     main.innerHTML = '';
     main.append(HT.el('h1', { class: 'page-title' }, '오늘은 뭘 계산해 볼까요'), HT.el('p', { class: 'page-desc' }, `집·급여·세금·노후를 숫자로 확인하는 계산기 ${HT.calcs.length}개. 모든 계산은 브라우저 안에서 이루어지며 입력값은 어디에도 전송되지 않습니다.`));
+    const q = HT.el('input', { class: 'home-search', type: 'search', placeholder: '계산기 검색 — 이름·키워드' });
+    main.append(q);
     const grid = HT.el('div', { class: 'home-grid' });
+    const openByDefault = !narrow();
     HT.cats.forEach(cat => { const list = HT.calcs.filter(c => c.cat === cat); if (!list.length) return;
-      const card = HT.el('div', { class: 'card' }); card.append(HT.el('h3', {}, [cat, HT.el('span', { class: 'cnt' }, list.length + '개')]));
-      const ul = HT.el('ul'); list.forEach(c => ul.append(HT.el('li', {}, HT.el('a', { href: '#/' + c.id }, c.name)))); card.append(ul); grid.append(card); });
+      const card = HT.el('details', { class: 'card' }); card.open = openByDefault;
+      card.append(HT.el('summary', {}, HT.el('h3', {}, [cat, HT.el('span', { class: 'cnt' }, list.length + '개')])));
+      const ul = HT.el('ul'); list.forEach(c => ul.append(HT.el('li', { 'data-id': c.id }, HT.el('a', { href: '#/' + c.id }, c.name)))); card.append(ul); grid.append(card); });
     main.append(grid);
+    q.addEventListener('input', () => {
+      const s = q.value.trim().toLowerCase();
+      grid.querySelectorAll('details.card').forEach(card => {
+        let any = false;
+        card.querySelectorAll('li').forEach(li => {
+          const c = HT.byId(li.dataset.id);
+          const hit = !s || c.name.toLowerCase().includes(s) || (c.keywords || '').includes(s) || (c.cat || '').includes(s);
+          li.classList.toggle('hidden', !hit); any = any || hit;
+        });
+        card.classList.toggle('hidden', !any);
+        card.open = s ? any : openByDefault;
+      });
+    });
     main.append(HT.el('div', { class: 'foot', html: '기준: 2026년 9월 5일 현재 시행 중인 세법·요율(각 계산기 안내 참조). 결과는 참고용이며 실제 세액·요금은 개인 상황과 고시에 따라 달라질 수 있습니다.' }));
+  }
+
+  /* 좁은 화면에서 결과가 화면 밖에 있을 때 핵심 숫자를 위에 붙여 둔다 */
+  let kpiBar = null, kpiIO = null, kpiMO = null, kpiSeen = null, kpiScroll = null;
+  function clearKpiBar() {
+    if (kpiIO) kpiIO.disconnect(); if (kpiMO) kpiMO.disconnect();
+    if (kpiScroll) window.removeEventListener('scroll', kpiScroll);
+    if (kpiBar) kpiBar.remove();
+    kpiBar = kpiIO = kpiMO = kpiSeen = kpiScroll = null;
+  }
+  function setupKpiBar(root) {
+    const out = root.querySelector('.panel.out');
+    if (!out || !narrow() || !window.IntersectionObserver) return;
+    const lbl = HT.el('span', { class: 'l' }), val = HT.el('span', { class: 'v' });
+    const btn = HT.el('button', { class: 'btn sm', type: 'button' }, '결과 보기 ↓');
+    kpiBar = HT.el('div', { class: 'kpibar' }, [HT.el('div', { class: 't' }, [lbl, val]), btn]);
+    btn.addEventListener('click', () => HT.scrollTo(out));
+    document.body.append(kpiBar);
+    const sync = () => {
+      const k = out.querySelector('.kpi');
+      if (!k) { kpiBar.classList.remove('on'); return; }
+      lbl.textContent = (k.querySelector('.lbl') || {}).textContent || '결과';
+      val.textContent = (k.querySelector('.val') || {}).textContent || '';
+      if (k !== kpiSeen) {
+        kpiSeen = k;
+        if (kpiIO) kpiIO.disconnect();
+        kpiIO = new IntersectionObserver(es => {
+          const e = es[0];
+          kpiBar.classList.toggle('on', !e.isIntersecting && e.boundingClientRect.top > 0);
+        }, { threshold: 0 });
+        kpiIO.observe(k);
+      }
+    };
+    kpiMO = new MutationObserver(sync);
+    kpiMO.observe(out, { childList: true, subtree: true, characterData: true });
+    // 맨 위에서는 메뉴 버튼을 가리지 않도록 조금 내려간 뒤부터 띄운다
+    kpiScroll = () => kpiBar && kpiBar.classList.toggle('past', window.scrollY > 140);
+    window.addEventListener('scroll', kpiScroll, { passive: true });
+    kpiScroll();
+    sync();
   }
   function renderCalc(main, c) {
     main.innerHTML = '';
@@ -193,6 +258,7 @@
     try { cleanup = c.render(root) || null; } catch (e) { root.append(HT.el('div', { class: 'alert' }, '계산기를 불러오지 못했습니다: ' + e.message)); console.error(e); }
     if (c.note) main.append(HT.note(c.note, '안내'));
     main.append(HT.el('div', { class: 'foot', html: '계산은 모두 브라우저 안에서 이루어지며 입력값은 어디에도 전송되지 않습니다. 결과는 참고용이니 신고·계약 전에는 세무사·금융기관에 확인하세요.' }));
+    setupKpiBar(root);
   }
   function buildSide(side) {
     const q = HT.el('input', { class: 'search', type: 'search', placeholder: '계산기 검색' });
@@ -203,6 +269,7 @@
   function route() {
     const main = document.getElementById('main'), side = document.getElementById('side');
     if (cleanup) { try { cleanup(); } catch (e) {} cleanup = null; }
+    clearKpiBar();
     const id = (location.hash || '#/').replace(/^#\/?/, '');
     side.querySelectorAll('a[data-id]').forEach(a => a.classList.toggle('active', a.dataset.id === id));
     side.classList.remove('open');

@@ -63,7 +63,19 @@ details.adv summary { cursor: pointer; font-size: 13px; color: var(--brand-ink);
 
 /* 결과 */
 .out h2 { font-size: 21px; margin: 32px 0 12px; padding-top: 24px; border-top: 1px solid var(--line); }
-.out h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.out > h2:first-child, .out > .sec:first-of-type > h2 { margin-top: 0; padding-top: 0; border-top: 0; }
+
+/* 목차와 접이식 섹션 */
+.toc { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
+.toc a { padding: 4px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper);
+  font-size: 13px; color: var(--ink); text-decoration: none; white-space: nowrap; }
+.toc a:hover { border-color: var(--brand-key); color: var(--brand-ink); }
+h2.sec-h { display: flex; align-items: baseline; gap: 8px; cursor: pointer; scroll-margin-top: 8px; }
+h2.sec-h::after { content: "▾"; margin-left: auto; font-size: 14px; font-weight: 400; color: var(--ink-soft); }
+.sec.open > h2.sec-h::after { content: "▴"; }
+h2.sec-h:hover { color: var(--brand-ink); }
+.sec-body { display: none; }
+.sec.open > .sec-body { display: block; }
 .out h4 { font-family: var(--font-mid); font-weight: 500; font-size: 15px; margin: 18px 0 6px; }
 .out p { margin: 0 0 10px; word-break: keep-all; }
 .empty { color: var(--ink-soft); padding: 48px 0; text-align: center; }
@@ -131,8 +143,15 @@ ul.list li b { font-weight: 500; }
   .panel.in { position: static; }
   table.won td.gz .h { font-size: 30px; }
   .top .tag { display: none; }
+  /* 좁은 화면에서는 설명 칸을 넓혀 줄바꿈을 줄인다 */
+  dl.kv { grid-template-columns: 68px 1fr; gap: 3px 8px; }
+  .out h2 { margin: 24px 0 10px; padding-top: 18px; }
+  .out h4 { margin: 14px 0 5px; }
 }
 @media print {
+  .sec-body { display: block !important; }
+  .toc { display: none; }
+  h2.sec-h::after { content: ""; }
   .panel.in, .top, .btns, .foot { display: none; }
   .wrap { grid-template-columns: 1fr; padding: 0; }
   .panel { border: 0; padding: 0; }

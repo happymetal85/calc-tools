@@ -195,6 +195,68 @@
     h.push('<div class="note"><ul>' + T.caveat.map(function (c) { return '<li>' + c + '</li>'; }).join('') + '</ul></div>');
 
     $('out').innerHTML = h.join('');
+    sectionize();
+  }
+
+  /* 부드럽게 스크롤하되, 브라우저가 무시하면 그냥 이동한다 */
+  function scrollToEl(el) {
+    var y = Math.max(0, window.scrollY + el.getBoundingClientRect().top - 8), from = window.scrollY;
+    try { window.scrollTo({ top: y, behavior: 'smooth' }); } catch (e) { window.scrollTo(0, y); }
+    setTimeout(function () { if (Math.abs(window.scrollY - from) < 4) window.scrollTo(0, y); }, 400);
+  }
+
+  /* h2 단위로 접었다 펴는 섹션과 목차를 만든다 — 좁은 화면에서 첫 섹션만 펼쳐 둔다 */
+  function sectionize() {
+    var out = $('out');
+    var heads = out.querySelectorAll(':scope > h2');
+    if (!heads.length) return;
+    var lead = document.createElement('div'), secs = [], cur = null;
+    Array.prototype.slice.call(out.childNodes).forEach(function (n) {
+      if (n.nodeType === 1 && n.tagName === 'H2') { cur = { h: n, body: document.createElement('div') }; secs.push(cur); }
+      else if (cur) cur.body.appendChild(n);
+      else lead.appendChild(n);
+    });
+    var narrow = window.matchMedia('(max-width: 900px)').matches;
+    var toc = document.createElement('nav');
+    toc.className = 'toc';
+    toc.setAttribute('aria-label', '풀이 목차');
+    out.innerHTML = '';
+    out.appendChild(lead);
+    out.appendChild(toc);
+    secs.forEach(function (s, i) {
+      var sec = document.createElement('section');
+      sec.className = 'sec' + (!narrow || i === 0 ? ' open' : '');
+      sec.id = 'sec' + i;
+      s.h.className = 'sec-h';
+      s.h.setAttribute('role', 'button');
+      s.h.setAttribute('tabindex', '0');
+      s.h.setAttribute('aria-expanded', sec.className.indexOf('open') >= 0 ? 'true' : 'false');
+      s.body.className = 'sec-body';
+      sec.appendChild(s.h); sec.appendChild(s.body);
+      out.appendChild(sec);
+      var a = document.createElement('a');
+      a.className = 'toc-a'; a.href = '#sec' + i;
+      a.textContent = s.h.textContent.split('—')[0].trim();
+      toc.appendChild(a);
+    });
+    function toggle(sec, force) {
+      var open = force === undefined ? !sec.classList.contains('open') : force;
+      sec.classList.toggle('open', open);
+      sec.querySelector('.sec-h').setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    out.querySelectorAll('.sec-h').forEach(function (hh) {
+      hh.addEventListener('click', function () { toggle(hh.parentNode); });
+      hh.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(hh.parentNode); } });
+    });
+    toc.addEventListener('click', function (e) {
+      var a = e.target.closest('a'); if (!a) return;
+      e.preventDefault();
+      var sec = out.querySelector(a.getAttribute('href'));
+      if (!sec) return;
+      toggle(sec, true);
+      scrollToEl(sec);
+    });
+    window.addEventListener('beforeprint', function () { out.querySelectorAll('.sec').forEach(function (x) { toggle(x, true); }); });
   }
   function card(l, v, s) { return '<div class="k"><div class="l">' + l + '</div><div class="v">' + v + '</div><div class="s">' + s + '</div></div>'; }
   function fmtD(d) { return d.m + '/' + d.d + ' ' + pad(d.h) + ':' + pad(d.mi); }
@@ -214,7 +276,7 @@
       render(o);
       var q = new URLSearchParams({ g: o.gender, cal: o.cal, y: o.inY, m: o.inM, d: o.inD, h: o.unknownHour ? '' : o.h, mi: o.unknownHour ? '' : o.mi, unk: o.unknownHour ? 1 : 0, city: $('city').value, corr: $('corr').value, zi: $('zi').value, dst: $('dst').checked ? 1 : 0 });
       history.replaceState(null, '', '?' + q.toString());
-      if (window.innerWidth < 900) $('out').scrollIntoView({ behavior: 'smooth' });
+      if (window.innerWidth < 900) scrollToEl($('out'));
     } catch (e) { $('err').textContent = e.message; $('err').hidden = false; }
   }
   $('go').addEventListener('click', run);
