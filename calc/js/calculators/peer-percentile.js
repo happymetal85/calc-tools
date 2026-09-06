@@ -37,7 +37,7 @@ HT.register({
       const incAll = topPct(v.salary, INCOME_PTS, 0.688); const incAge = agePercentile(v.salary / 12, v.age, AGE_INCOME, SIG_INC);
       const nwAll = topPct(v.nw, NW_PTS, SIG_NW); const nwAge = agePercentile(v.nw, v.age, AGE_NW, SIG_NW);
       const ageLabel = v.age <= 29 ? '20대' : v.age <= 39 ? '30대' : v.age <= 49 ? '40대' : v.age <= 59 ? '50대' : '60세 이상';
-      const share = `내 연봉은 대한민국 근로자 중 ${fmtTop(incAll)}, ${ageLabel} 중 ${fmtTop(incAge.top)}. 순자산은 전체 가구 중 ${fmtTop(nwAll)} — 한손도구 또래 백분위`;
+      const share = `내 연봉은 대한민국 근로자 중 ${fmtTop(incAll)}, ${ageLabel} 중 ${fmtTop(incAge.top)}. 순자산은 전체 가구 중 ${fmtTop(nwAll)} — 숫자맛집 또래 백분위`;
       const btns = HT.shareButtons(share, { title: '나는 상위 몇 %?', big: `연봉 ${fmtTop(incAll)}`, lines: [`${ageLabel} 안에서 ${fmtTop(incAge.top)}`, `순자산 ${fmtTop(nwAll)} (${ageLabel} ${fmtTop(nwAge.top)})`], file: 'percentile' });
       const nextInc = [...INCOME_PTS].reverse().find(p => p[1] > v.salary); const nextNw = [...NW_PTS].reverse().find(p => p[1] > v.nw); // 바로 위 구간
       out.set(HT.kpi('연봉 순위 (전체 근로자)', fmtTop(incAll), `연봉 ${HT.wonKor(v.salary)} · 국세청 2023년 귀속 근로소득 1,368만명 기준 · 중위 4,272만 · 평균 5,482만`), bar(incAll, `내 연봉 ${HT.wonKor(v.salary)}`),

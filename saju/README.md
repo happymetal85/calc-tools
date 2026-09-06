@@ -6,7 +6,7 @@
 ## 실행
 
 ```
-py -3 -m http.server 8791 --directory 사주
+py -3 -m http.server 8791 --directory saju
 ```
 
 `http://localhost:8791/` 접속. 검증 페이지는 `/tools/test.html` (절기 72건·음력 31건·일진·사주 기둥, 총 112건).

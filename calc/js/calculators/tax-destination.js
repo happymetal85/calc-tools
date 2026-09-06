@@ -19,7 +19,7 @@ HT.register({
     function calc(v) {
       const r = HT.payroll.netMonthly(v.salary, v.fam); const incomeTax = r.tax * 12; const local = r.local * 12; const vat = r.net * 12 * v.spendRate / 100 * v.taxable / 100 * 10 / 110; const national = incomeTax + vat + v.otherTax;
       const rows = BUDGET.map(([n, amt]) => [n, amt, amt / SUM, national * amt / SUM]);
-      const share = `내가 올해 낸 국세 ${HT.won(national)} 중 복지·고용에 ${HT.won(rows[0][3])}, 교육에 ${HT.won(rows[2][3])}, 국방에 ${HT.won(rows[3][3])}, R&D에 ${HT.won(rows[4][3])}이 쓰입니다 (2026년 예산 비율) — 한손도구 내 세금이 간 곳`;
+      const share = `내가 올해 낸 국세 ${HT.won(national)} 중 복지·고용에 ${HT.won(rows[0][3])}, 교육에 ${HT.won(rows[2][3])}, 국방에 ${HT.won(rows[3][3])}, R&D에 ${HT.won(rows[4][3])}이 쓰입니다 (2026년 예산 비율) — 숫자맛집 내 세금이 간 곳`;
       const btns = HT.shareButtons(share, { title: '내 세금이 간 곳 (2026 예산 비율)', big: `국세 ${HT.won(national)}`, lines: [`복지·고용 ${HT.won(rows[0][3])} · 교육 ${HT.won(rows[2][3])}`, `국방 ${HT.won(rows[3][3])} · R&D ${HT.won(rows[4][3])}`], file: 'tax-destination' });
       out.set(HT.kpi('올해 내가 낸 국세 (추정)', HT.won(national), `소득세 ${HT.won(incomeTax)} + 부가세 ${HT.won(vat)}${v.otherTax ? ' + 기타 ' + HT.won(v.otherTax) : ''} · 지방소득세 ${HT.won(local)}은 지자체로, 4대보험 ${HT.won(r.ins.total * 12)}은 보험 기금으로`),
         HT.barChart(rows.map((x, i) => ({ label: x[0], value: x[3], color: i === 0 ? 'var(--c1)' : 'var(--g3)' })), { fmt: HT.won, padL: 150, cap: '내 국세가 분야별로 간 금액 (2026년 예산 비율)' }),

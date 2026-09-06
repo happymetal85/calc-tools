@@ -20,7 +20,7 @@ HT.register({
       const items = [[v.customName || '내 품목', v.customPrice], ...DEFAULT];
       const fmtT = (h) => h < 1 ? `${HT.fmt(h * 60, 0)}분` : h < 8 ? `${HT.fmt(h, 1)}시간` : h < hoursY ? `${HT.fmt(h / 8, 1)}일 (${HT.fmt(h, 0)}시간)` : `${HT.fmt(h / hoursY, 1)}년`;
       const rows = items.map(([n, p]) => { const h = p / hourly; const saveM = v.save > 0 ? p / v.save : null; return [n, HT.won(p), fmtT(h), saveM == null ? '-' : saveM < 1 ? '한 달 안' : saveM < 12 ? `${HT.fmt(saveM, 1)}개월` : `${HT.fmt(saveM / 12, 1)}년`]; });
-      const share = `내 시급은 ${HT.won(hourly)}. 아메리카노는 ${fmtT(4500 / hourly)}, 아이폰은 ${fmtT(1550000 / hourly)}, 서울 아파트는 ${fmtT(1508100000 / hourly)}어치 노동 — 한손도구 노동시간 가격표`;
+      const share = `내 시급은 ${HT.won(hourly)}. 아메리카노는 ${fmtT(4500 / hourly)}, 아이폰은 ${fmtT(1550000 / hourly)}, 서울 아파트는 ${fmtT(1508100000 / hourly)}어치 노동 — 숫자맛집 노동시간 가격표`;
       const btns = HT.shareButtons(share, { title: '노동시간 가격표', big: `시급 ${HT.won(hourly)}`, lines: [`아메리카노 ${fmtT(4500 / hourly)}`, `아이폰 ${fmtT(1550000 / hourly)}`, `서울 아파트 ${fmtT(1508100000 / hourly)}`], file: 'labor' });
       out.set(HT.kpi(`내 시급 (${v.basis === 'net' ? '세후' : '세전'})`, HT.won(hourly), `연 ${HT.wonKor(annual)} ÷ ${HT.fmt(hoursY)}시간 · 1분에 ${HT.won(hourly / 60)}`),
         HT.table(['품목', '가격', '일해야 하는 시간', '저축으로 사려면'], rows, { right: [1, 2, 3], scroll: false, hi: (r, i) => i === 0 }),

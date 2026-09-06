@@ -32,7 +32,7 @@ HT.register({
         for (const [k, val] of Object.entries({ income, ins, vat, hold, car })) { T[k] += val * disc; bands[b][k] += val * disc; }
         if (y % 10 === 0 || age === v.retire) rows.push([age + '세', HT.won(g), HT.won(income * disc), HT.won(ins * disc), HT.won(vat * disc), HT.won((hold + car) * disc)]); }
       const total = T.income + T.ins + T.vat + T.hold + T.car; const labels = Object.keys(bands);
-      const share = `나는 ${v.age}세부터 ${v.life}세까지 세금·보험료로 ${HT.wonKor(total)}을 냅니다 (소득세 ${HT.wonKor(T.income)} · 4대보험 ${HT.wonKor(T.ins)} · 부가세 ${HT.wonKor(T.vat)}). 서울 아파트 ${HT.fmt(total / 1508100000, 1)}채 값 — 한손도구 평생 세금 총액`;
+      const share = `나는 ${v.age}세부터 ${v.life}세까지 세금·보험료로 ${HT.wonKor(total)}을 냅니다 (소득세 ${HT.wonKor(T.income)} · 4대보험 ${HT.wonKor(T.ins)} · 부가세 ${HT.wonKor(T.vat)}). 서울 아파트 ${HT.fmt(total / 1508100000, 1)}채 값 — 숫자맛집 평생 세금 총액`;
       const btns = HT.shareButtons(share, { title: '평생 세금 총액', big: HT.wonKor(total), lines: [`${v.age}~${v.life}세 · 소득세 ${HT.wonKor(T.income)} · 4대보험 ${HT.wonKor(T.ins)} · 부가세 ${HT.wonKor(T.vat)}`, `서울 아파트 ${HT.fmt(total / 1508100000, 1)}채`], file: 'lifetime-tax' });
       out.set(HT.kpi('평생 낼 세금 + 보험료', HT.wonKor(total), `${v.age}~${v.life}세 · ${v.real ? '현재 가치' : '명목'} · 서울 아파트(15억) ${HT.fmt(total / 1508100000, 1)}채 · 평생 근로소득 ${HT.wonKor(earned)}의 ${HT.pct(earned ? total / earned * 100 : 0, 0)}`),
         HT.barChart([{ label: '소득세+지방세', value: T.income, color: 'var(--c1)' }, { label: '4대보험 (본인)', value: T.ins, color: 'var(--c2)' }, { label: '부가세 (추정)', value: T.vat, color: 'var(--c3)' }, { label: '보유세', value: T.hold, color: 'var(--g2)' }, { label: '자동차세', value: T.car, color: 'var(--g3)' }].filter(x => x.value > 0), { fmt: HT.wonKor, cap: '항목별 평생 합계' }),

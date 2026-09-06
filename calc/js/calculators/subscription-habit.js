@@ -19,7 +19,7 @@ HT.register({
       const all = [...subs, ...habits]; const monthly = all.reduce((a, b) => a + b.m, 0); if (!monthly) { out.set(HT.el('div', { class: 'empty' }, '구독을 체크하거나 습관 지출 횟수를 넣으세요.')); return; }
       const r = v.rate / 100 * (1 - .154) / 12, n = v.years * 12; const fv = (m) => r ? m * (Math.pow(1 + r, n) - 1) / r : m * n; const hourly = HT.payroll.netMonthly(v.salary).net * 12 / 2080;
       all.sort((a, b) => b.m - a.m); const top = all[0];
-      const share = `매달 구독·습관에 ${HT.won(monthly)}, 1년이면 ${HT.wonKor(monthly * 12)}. ${v.years}년 굴리면 ${HT.wonKor(fv(monthly))}. 가장 큰 건 ${top.n} 월 ${HT.won(top.m)} — 한손도구 구독료·습관 지출의 진실`;
+      const share = `매달 구독·습관에 ${HT.won(monthly)}, 1년이면 ${HT.wonKor(monthly * 12)}. ${v.years}년 굴리면 ${HT.wonKor(fv(monthly))}. 가장 큰 건 ${top.n} 월 ${HT.won(top.m)} — 숫자맛집 구독료·습관 지출의 진실`;
       out.set(HT.kpi('매달 새는 돈', HT.won(monthly), `연 ${HT.wonKor(monthly * 12)} · 내 시급(${HT.won(hourly)})으로 매달 ${HT.fmt(monthly / hourly, 1)}시간어치`),
         HT.kpis([[`${v.years}년 뒤 (복리 ${v.rate}%)`, HT.wonKor(fv(monthly)), `원금 ${HT.wonKor(monthly * n)} + 수익 ${HT.wonKor(fv(monthly) - monthly * n)}`], ['구독 · 습관', `${HT.won(subs.reduce((a, b) => a + b.m, 0))} · ${HT.won(habits.reduce((a, b) => a + b.m, 0))}`, `${subs.length}개 구독 · ${habits.length}개 습관`], ['월 저축 여력 대비', prof.rent != null ? HT.pct(monthly / Math.max(1, HT.payroll.netMonthly(v.salary).net - (prof.rent + prof.fixed + prof.living)) * 100, 0) : '-', '대시보드 지출 기준']]),
         HT.barChart(all.slice(0, 10).map((x, i) => ({ label: x.n, value: x.m, color: i === 0 ? 'var(--c1)' : 'var(--g3)' })), { fmt: HT.won, padL: 170, cap: '항목별 월 지출' }),

@@ -22,7 +22,7 @@ HT.register({
       const months = MONTHS.map((_, i) => HT.clamp(Math.round(total + (rnd(20 + i) - 0.5) * 40), 30, 99)); const best = [...months.keys()].sort((a, b) => months[b] - months[a]).slice(0, 3).sort((a, b) => a - b); const worst = [...months.keys()].sort((a, b) => months[a] - months[b]).slice(0, 2).sort((a, b) => a - b);
       const age = 2027 - y; const ageTxt = AGE.find(a => age <= a[0])[1]; const lucky = { color: ['흰색', '남색', '초록', '금색', '보라'][seed % 5], num: [(seed % 9) + 1, ((seed >> 3) % 9) + 1].join('·'), dir: ['동', '서', '남', '북', '동남', '서북'][(seed >> 5) % 6] };
       const grade = (s) => s >= 85 ? '상' : s >= 70 ? '중상' : s >= 55 ? '중' : '하'; const stars = (s) => '★'.repeat(Math.round(s / 20)) + '☆'.repeat(5 - Math.round(s / 20));
-      const share = `2027 정미년 ${ZOD[z]}띠 총운 ${total}점(${grade(total)}) · ${rel[0]} — 재물 ${scores[0]} 직장 ${scores[1]} 사랑 ${scores[2]} 건강 ${scores[3]} 학업 ${scores[4]} · 좋은 달 ${best.map(i => MONTHS[i]).join('·')} — 한손도구 신년운세`;
+      const share = `2027 정미년 ${ZOD[z]}띠 총운 ${total}점(${grade(total)}) · ${rel[0]} — 재물 ${scores[0]} 직장 ${scores[1]} 사랑 ${scores[2]} 건강 ${scores[3]} 학업 ${scores[4]} · 좋은 달 ${best.map(i => MONTHS[i]).join('·')} — 숫자맛집 신년운세`;
       out.set(HT.kpi(`${ZOD[z]}띠 · 2027 정미년 총운`, `${total}점 ${stars(total)}`, `${rel[0]} — ${rel[2]}`),
         HT.el('div', { class: 'kpis' }, FIELDS.map((fld, i) => HT.kpi(fld, `${scores[i]} ${stars(scores[i])}`, TXT[fld][scores[i] >= 80 ? 2 : scores[i] >= 60 ? 1 : 0]))),
         HT.stackChart(MONTHS, [{ name: '월별 흐름', color: 'var(--c1)', values: months }], { fmt: x => Math.round(x) + '점', cap: `좋은 달 ${best.map(i => MONTHS[i]).join(' · ')} — 조심할 달 ${worst.map(i => MONTHS[i]).join(' · ')}` }),

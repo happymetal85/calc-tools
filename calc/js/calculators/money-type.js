@@ -48,7 +48,7 @@ HT.register({
       if (!done) return;
       const score = { S: 0, C: 0, A: 0, R: 0, P: 0, I: 0, F: 0, N: 0 }; Object.values(answers).forEach(k => score[k]++);
       const code = (score.S >= score.C ? 'S' : 'C') + (score.A >= score.R ? 'A' : 'R') + (score.P >= score.I ? 'P' : 'I') + (score.F >= score.N ? 'F' : 'N'); const T = TYPES[code];
-      const share = `내 돈 성향은 [${code}] ${T[0]} — ${AX[code[0]]}·${AX[code[1]]}·${AX[code[2]]}·${AX[code[3]]}. 한손도구 돈 성향 16유형`;
+      const share = `내 돈 성향은 [${code}] ${T[0]} — ${AX[code[0]]}·${AX[code[1]]}·${AX[code[2]]}·${AX[code[3]]}. 숫자맛집 돈 성향 16유형`;
       const btns = HT.shareButtons(share, { title: '내 돈 성향 16유형', big: `${code} ${T[0]}`, lines: [`${AX[code[0]]} · ${AX[code[1]]} · ${AX[code[2]]} · ${AX[code[3]]}`, T[1]], file: 'money-type' });
       const axes = [['S', 'C'], ['A', 'R'], ['P', 'I'], ['F', 'N']].map(([a, b]) => ({ label: `${AX[a]} ${score[a]} : ${score[b]} ${AX[b]}`, value: score[a] - score[b] }));
       body.append(HT.el('div', { class: 'kpi', style: 'margin-top:16px' }, [HT.el('div', { class: 'lbl' }, `내 유형 ${code}`), HT.el('div', { class: 'val' }, T[0]), HT.el('div', { class: 'sub' }, T[1])]),

@@ -31,7 +31,7 @@ HT.register({
       // 지원
       const first = v.order === '1' ? 2e6 : 3e6; const parent = 1e6 * 12 + 5e5 * 12; let child = 0; for (let y = 0; y < 8; y++) child += (v.metro ? 1e5 : 1.05e5) * 12 * g(y); let credit = 0; const cr = v.order === '1' ? 25e4 : v.order === '2' ? 30e4 : 40e4; for (let y = 8; y <= 20; y++) credit += cr * g(y);
       const support = first + parent + child + credit; const net = total - support;
-      const share = `아이 한 명 키우는 데 ${HT.wonKor(total)} (출생~${v.univ === 'none' ? '고교' : '대학'}${v.edu ? ', 사교육 포함' : ''}), 정부 지원 ${HT.wonKor(support)} 빼면 순부담 ${HT.wonKor(net)} — 월평균 ${HT.won(net / ((v.univ === 'none' ? 19 : 23) * 12))} · 한손도구`;
+      const share = `아이 한 명 키우는 데 ${HT.wonKor(total)} (출생~${v.univ === 'none' ? '고교' : '대학'}${v.edu ? ', 사교육 포함' : ''}), 정부 지원 ${HT.wonKor(support)} 빼면 순부담 ${HT.wonKor(net)} — 월평균 ${HT.won(net / ((v.univ === 'none' ? 19 : 23) * 12))} · 숫자맛집`;
       out.set(HT.kpi('순부담 (지원금 뺀 뒤)', HT.wonKor(net), `총 양육비 ${HT.wonKor(total)} − 정부 지원 ${HT.wonKor(support)} · 월평균 ${HT.won(net / ((v.univ === 'none' ? 19 : 23) * 12))}`),
         HT.kpis([['총 양육비', HT.wonKor(total), v.edu ? `사교육 ${HT.wonKor(eduTotal)} 포함` : '사교육 제외'], ['정부 지원 합계', HT.wonKor(support), '첫만남·부모급여·아동수당·자녀세액공제'], ['서울 아파트 대비', HT.fmt(net / 1508100000 * 100, 0) + '%', '평균 15억 810만원 기준']]),
         HT.stackChart(bands.map(b => b.label.split(' ')[0]), [{ name: '기본 양육비', color: 'var(--c2)', values: bands.map(b => b.cost) }, { name: '사교육', color: 'var(--c1)', values: bands.map(b => b.edu) }], { fmt: HT.wonKor, cap: '나이대별 비용' }),

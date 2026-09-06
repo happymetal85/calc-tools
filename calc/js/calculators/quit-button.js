@@ -28,7 +28,7 @@ HT.register({
       // 월별 잔액 시뮬레이션
       let bal = v.assets + sev; const path = []; let months = 0; for (let m = 1; m <= 120; m++) { bal += (m <= uiMonths ? uiPerMonth : 0) - monthly; path.push(Math.max(0, bal)); if (bal < 0) { months = m - 1 + (bal + monthly) / monthly; break; } months = m; }
       const kind = months >= 12 ? 'ok' : months >= 6 ? 'warn' : 'danger';
-      const share = `지금 퇴사하면 ${HT.fmt(months, 1)}개월 버팁니다 (비상금 ${HT.wonKor(v.assets)} + 퇴직금 ${HT.wonKor(sev)}${ui ? ' + 실업급여 ' + HT.wonKor(ui) : ''}, 월 ${HT.won(monthly)} 지출) — 한손도구 퇴사 버튼`;
+      const share = `지금 퇴사하면 ${HT.fmt(months, 1)}개월 버팁니다 (비상금 ${HT.wonKor(v.assets)} + 퇴직금 ${HT.wonKor(sev)}${ui ? ' + 실업급여 ' + HT.wonKor(ui) : ''}, 월 ${HT.won(monthly)} 지출) — 숫자맛집 퇴사 버튼`;
       const btns = HT.shareButtons(share, { title: '지금 퇴사하면', big: `${HT.fmt(months, 1)}개월 버팀`, lines: [`비상금 ${HT.wonKor(v.assets)} + 퇴직금 ${HT.wonKor(sev)}${ui ? ' + 실업급여 ' + HT.wonKor(ui) : ''}`, `퇴사 후 월 지출 ${HT.won(monthly)}`], file: 'quit' });
       const labels = path.map((_, i) => (i + 1) + '개월').filter((_, i) => i % Math.max(1, Math.ceil(path.length / 12)) === 0 || i === path.length - 1); const vals = path.filter((_, i) => i % Math.max(1, Math.ceil(path.length / 12)) === 0 || i === path.length - 1);
       out.set(HT.kpi('지금 퇴사하면', `${HT.fmt(months, 1)}개월 버팀`, `월 ${HT.won(monthly)} 쓴다고 보면 · 권장 6개월 이상`),

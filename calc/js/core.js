@@ -1,4 +1,4 @@
-/* 한손도구 — 공통 코어
+/* 숫자맛집 — 공통 코어
    계산기는 HT.register({ id, cat, name, desc, render(root) }) 로 등록한다. */
 (function () {
   'use strict';
@@ -162,13 +162,13 @@
     g.fillStyle = '#00678C'; g.font = font(px, 700); lines.forEach(l => { y += px; g.fillText(l, 80, y); }); y += 40;
     g.fillStyle = '#DCE1E4'; g.fillRect(80, y, W - 160, 3); y += 60;
     g.fillStyle = '#23282D'; (card.lines || []).forEach(t => { wrap(t, 34, W - 160, 400).forEach(l => { y += 52; if (y < H - 140) g.fillText(l, 80, y); }); y += 14; });
-    g.fillStyle = '#646E76'; g.font = font(28, 400); g.fillText(card.footer || '한손도구 · 한 손으로 끝내는 계산기', 80, H - 70);
+    g.fillStyle = '#646E76'; g.font = font(28, 400); g.fillText(card.footer || '숫자맛집 · 궁금한 건 다 있습니다', 80, H - 70);
     g.fillStyle = '#0092C8'; g.fillRect(80, H - 110, 60, 6);
     return cv;
   };
   HT.shareButtons = (text, card) => {
     const copy = HT.el('button', { class: 'btn sm', type: 'button' }, '결과 문장 복사'); copy.addEventListener('click', () => { navigator.clipboard?.writeText(text); copy.textContent = '복사됨'; setTimeout(() => copy.textContent = '결과 문장 복사', 1500); });
-    const img = HT.el('button', { class: 'btn sm', type: 'button' }, '이미지 카드 저장'); img.addEventListener('click', () => { try { const cv = HT.shareCard(card || { title: '한손도구', big: text }); cv.toBlob(b => { const a = HT.el('a', { href: URL.createObjectURL(b), download: (card && card.file || 'hansondogu') + '.png' }); a.click(); img.textContent = '저장됨'; setTimeout(() => img.textContent = '이미지 카드 저장', 1500); }, 'image/png'); } catch (e) { img.textContent = '저장 실패'; } });
+    const img = HT.el('button', { class: 'btn sm', type: 'button' }, '이미지 카드 저장'); img.addEventListener('click', () => { try { const cv = HT.shareCard(card || { title: '숫자맛집', big: text }); cv.toBlob(b => { const a = HT.el('a', { href: URL.createObjectURL(b), download: (card && card.file || 'sutjamatjip') + '.png' }); a.click(); img.textContent = '저장됨'; setTimeout(() => img.textContent = '이미지 카드 저장', 1500); }, 'image/png'); } catch (e) { img.textContent = '저장 실패'; } });
     return HT.el('div', { class: 'btns' }, [copy, img]);
   };
 
@@ -178,7 +178,7 @@
   let cleanup = null;
   function renderHome(main) {
     main.innerHTML = '';
-    main.append(HT.el('h1', { class: 'page-title' }, '한손도구 계산기 모음'), HT.el('p', { class: 'page-desc' }, `집·급여·세금·노후를 숫자로 확인하는 계산기 ${HT.calcs.length}개. 모든 계산은 브라우저 안에서 이루어지며 입력값은 어디에도 전송되지 않습니다.`));
+    main.append(HT.el('h1', { class: 'page-title' }, '오늘은 뭘 계산해 볼까요'), HT.el('p', { class: 'page-desc' }, `집·급여·세금·노후를 숫자로 확인하는 계산기 ${HT.calcs.length}개. 모든 계산은 브라우저 안에서 이루어지며 입력값은 어디에도 전송되지 않습니다.`));
     const grid = HT.el('div', { class: 'home-grid' });
     HT.cats.forEach(cat => { const list = HT.calcs.filter(c => c.cat === cat); if (!list.length) return;
       const card = HT.el('div', { class: 'card' }); card.append(HT.el('h3', {}, [cat, HT.el('span', { class: 'cnt' }, list.length + '개')]));
@@ -196,7 +196,7 @@
   }
   function buildSide(side) {
     const q = HT.el('input', { class: 'search', type: 'search', placeholder: '계산기 검색' });
-    side.append(HT.el('a', { class: 'logo', href: '#/' }, '한손도구'), HT.el('p', { class: 'tagline' }, `계산기 ${HT.calcs.length}개 · 2026년 기준`), q);
+    side.append(HT.el('a', { class: 'logo', href: '#/' }, '숫자맛집'), HT.el('p', { class: 'tagline' }, `계산기 ${HT.calcs.length}개 · 2026년 기준`), q);
     HT.cats.forEach(cat => { const list = HT.calcs.filter(c => c.cat === cat); if (!list.length) return; const box = HT.el('div', { class: 'cat', 'data-cat': cat }); box.append(HT.el('h4', {}, cat)); list.forEach(c => box.append(HT.el('a', { href: '#/' + c.id, 'data-id': c.id }, c.name))); side.append(box); });
     q.addEventListener('input', () => { const s = q.value.trim().toLowerCase(); side.querySelectorAll('.cat').forEach(box => { let any = false; box.querySelectorAll('a').forEach(a => { const hit = !s || a.textContent.toLowerCase().includes(s) || (HT.byId(a.dataset.id)?.keywords || '').includes(s); a.classList.toggle('hidden', !hit); any = any || hit; }); box.classList.toggle('hidden', !any); }); });
   }
@@ -207,7 +207,7 @@
     side.querySelectorAll('a[data-id]').forEach(a => a.classList.toggle('active', a.dataset.id === id));
     side.classList.remove('open');
     const c = id && HT.byId(id);
-    if (c) { renderCalc(main, c); document.title = c.name + ' — 한손도구'; } else { renderHome(main); document.title = '한손도구 계산기 모음'; }
+    if (c) { renderCalc(main, c); document.title = c.name + ' — 숫자맛집'; } else { renderHome(main); document.title = '숫자맛집 · 궁금한 건 다 있습니다'; }
     window.scrollTo(0, 0);
   }
   document.addEventListener('DOMContentLoaded', () => { HT.calcs.sort((a, b) => HT.cats.indexOf(a.cat) - HT.cats.indexOf(b.cat) || (a.order || 0) - (b.order || 0)); buildSide(document.getElementById('side')); document.getElementById('menu').addEventListener('click', () => document.getElementById('side').classList.toggle('open')); route(); window.addEventListener('hashchange', route); });
