@@ -20,7 +20,7 @@ HT.register({
       const rel = REL[z] || ['평', 72, '未와 특별한 합·충이 없는 해. 스스로 만드는 만큼 얻는다']; const seed = hash(`${v.birth}|2027`); const rnd = (i) => (hash(seed + ':' + i) % 1000) / 1000;
       const scores = FIELDS.map((fld, i) => HT.clamp(Math.round(rel[1] + (rnd(i) - 0.5) * 30), 35, 99)); const total = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
       const months = MONTHS.map((_, i) => HT.clamp(Math.round(total + (rnd(20 + i) - 0.5) * 40), 30, 99)); const best = [...months.keys()].sort((a, b) => months[b] - months[a]).slice(0, 3).sort((a, b) => a - b); const worst = [...months.keys()].sort((a, b) => months[a] - months[b]).slice(0, 2).sort((a, b) => a - b);
-      const age = 2027 - y; const ageTxt = AGE.find(a => age <= a[0])[1]; const lucky = { color: ['흰색', '남색', '초록', '금색', '보라'][seed % 5], num: [(seed % 9) + 1, ((seed >> 3) % 9) + 1].join('·'), dir: ['동', '서', '남', '북', '동남', '서북'][(seed >> 5) % 6] };
+      const age = 2027 - y; const ageTxt = AGE.find(a => age <= a[0])[1]; const lucky = { color: ['흰색', '남색', '초록', '금색', '보라'][seed % 5], num: [(seed % 9) + 1, ((seed >>> 3) % 9) + 1].join('·'), dir: ['동', '서', '남', '북', '동남', '서북'][(seed >>> 5) % 6] };
       const grade = (s) => s >= 85 ? '상' : s >= 70 ? '중상' : s >= 55 ? '중' : '하'; const stars = (s) => '★'.repeat(Math.round(s / 20)) + '☆'.repeat(5 - Math.round(s / 20));
       const share = `2027 정미년 ${ZOD[z]}띠 총운 ${total}점(${grade(total)}) · ${rel[0]} — 재물 ${scores[0]} 직장 ${scores[1]} 사랑 ${scores[2]} 건강 ${scores[3]} 학업 ${scores[4]} · 좋은 달 ${best.map(i => MONTHS[i]).join('·')} — 숫자맛집 신년운세`;
       out.set(HT.kpi(`${ZOD[z]}띠 · 2027 정미년 총운`, `${total}점 ${stars(total)}`, `${rel[0]} — ${rel[2]}`),

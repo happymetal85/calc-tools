@@ -184,8 +184,15 @@ textarea.out { width: 100%; min-height: 280px; padding: 10px; border: 1px solid 
   .field label { margin-bottom: 2px; }
   .field input[type=text], .field input[type=number], .field input[type=date],
   .field input[type=time], .field select, .field textarea { padding: 7px 9px; }
-  /* 긴 설명이 오른쪽 칸에 들어와도 가로로 삐져나가지 않게 */
-  .rows td:last-child { white-space: normal; word-break: keep-all; }
+  /* 값이 문장인 줄은 라벨 아래로 내려 쓴다 — 라벨 칸이 한 글자로 눌리지 않게 */
+  .rows tr.txt { display: block; border-bottom: 1px solid var(--line); }
+  .rows tr.txt td { display: block; border: 0; padding: 0; }
+  .rows tr.txt td:first-child { padding-top: 8px; font-size: 13px; color: var(--ink-soft); }
+  .rows tr.strong.txt td:first-child { color: var(--ink); }
+  .rows tr.txt td:last-child { text-align: left; padding: 2px 0 8px; }
+  /* 그 밖에 긴 값이 와도 가로로 삐져나가지 않게 */
+  .rows td { word-break: keep-all; }
+  .rows td:last-child { white-space: normal; }
   .scroll-x { min-width: 0; }
   /* 칸이 많은 표는 표 안에서만 좌우로 넘긴다 — 페이지가 옆으로 밀리지 않게 */
   table.grid { display: block; overflow-x: auto; }
