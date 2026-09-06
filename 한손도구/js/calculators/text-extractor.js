@@ -1,7 +1,7 @@
 HT.register({
   id: 'text-extractor', cat: '유용한도구', order: 5, name: '텍스트 추출기', keywords: 'OCR 텍스트 추출 PDF 이미지 워드 엑셀',
   desc: '이미지(OCR)·PDF·DOCX·XLSX·CSV·TXT 파일에서 텍스트를 뽑아 TXT 또는 마크다운으로 저장합니다. 파일은 브라우저 안에서만 처리되고 서버로 보내지 않습니다.',
-  note: '이미지 OCR은 Tesseract.js(한국어+영어)를 처음 실행할 때 언어 데이터(약 15MB)를 내려받습니다. PDF는 텍스트 레이어를 읽으며, 스캔 PDF는 페이지를 이미지로 그려 OCR합니다(느릴 수 있음). HWP·HWPX는 브라우저에서 해석할 수 없어 지원하지 않습니다. 원본 사이트는 서버(PyMuPDF·Tesseract)로 처리합니다.',
+  note: '이미지 OCR은 Tesseract.js(한국어+영어)를 처음 실행할 때 언어 데이터(약 15MB)를 내려받습니다. PDF는 텍스트 레이어를 읽으며, 스캔 PDF는 페이지를 이미지로 그려 OCR합니다(느릴 수 있음). HWP·HWPX는 브라우저에서 해석할 수 없어 지원하지 않습니다.',
   render(root) {
     const wrap = HT.el('div', { class: 'panel wide' }); root.append(wrap);
     const drop = HT.el('div', { class: 'drop' }, '여기에 파일을 끌어다 놓거나 클릭해서 선택 (PNG·JPG·GIF·BMP·WEBP·PDF·DOCX·XLSX·CSV·TXT, 10MB 이하)');

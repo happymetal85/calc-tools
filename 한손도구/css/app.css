@@ -1,4 +1,4 @@
-/* 한손도구 벤치마크 — 앱 스타일 (Tide 토큰 위에 얹는다) */
+/* 한손도구 — 앱 스타일 (Tide 토큰 위에 얹는다) */
 * { box-sizing: border-box; }
 body { font-size: 15px; line-height: 1.6; }
 a { color: var(--brand-ink); text-decoration: none; }

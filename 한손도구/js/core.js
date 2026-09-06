@@ -1,4 +1,4 @@
-/* 한손도구 벤치마크 — 공통 코어
+/* 한손도구 — 공통 코어
    계산기는 HT.register({ id, cat, name, desc, render(root) }) 로 등록한다. */
 (function () {
   'use strict';
@@ -178,7 +178,7 @@
   let cleanup = null;
   function renderHome(main) {
     main.innerHTML = '';
-    main.append(HT.el('h1', { class: 'page-title' }, '한손도구 계산기 모음'), HT.el('p', { class: 'page-desc' }, `codingmachine.co.kr 한손도구를 벤치마킹해 만든 계산기 ${HT.calcs.length}개. 모든 계산은 브라우저 안에서 이루어지며 입력값은 어디에도 전송되지 않습니다.`));
+    main.append(HT.el('h1', { class: 'page-title' }, '한손도구 계산기 모음'), HT.el('p', { class: 'page-desc' }, `집·급여·세금·노후를 숫자로 확인하는 계산기 ${HT.calcs.length}개. 모든 계산은 브라우저 안에서 이루어지며 입력값은 어디에도 전송되지 않습니다.`));
     const grid = HT.el('div', { class: 'home-grid' });
     HT.cats.forEach(cat => { const list = HT.calcs.filter(c => c.cat === cat); if (!list.length) return;
       const card = HT.el('div', { class: 'card' }); card.append(HT.el('h3', {}, [cat, HT.el('span', { class: 'cnt' }, list.length + '개')]));
@@ -192,11 +192,11 @@
     const root = HT.el('div', { class: 'calc' }); main.append(root);
     try { cleanup = c.render(root) || null; } catch (e) { root.append(HT.el('div', { class: 'alert' }, '계산기를 불러오지 못했습니다: ' + e.message)); console.error(e); }
     if (c.note) main.append(HT.note(c.note, '안내'));
-    main.append(HT.el('div', { class: 'foot', html: c.original === false ? '한손도구에서 새로 만든 도구입니다. codingmachine.co.kr에는 대응하는 원본이 없습니다.' : `벤치마크 원본: <a href="https://www.codingmachine.co.kr/calculators/${c.id}" target="_blank" rel="noopener">codingmachine.co.kr/calculators/${c.id}</a>` }));
+    main.append(HT.el('div', { class: 'foot', html: '계산은 모두 브라우저 안에서 이루어지며 입력값은 어디에도 전송되지 않습니다. 결과는 참고용이니 신고·계약 전에는 세무사·금융기관에 확인하세요.' }));
   }
   function buildSide(side) {
     const q = HT.el('input', { class: 'search', type: 'search', placeholder: '계산기 검색' });
-    side.append(HT.el('a', { class: 'logo', href: '#/' }, '한손도구'), HT.el('p', { class: 'tagline' }, `벤치마크 · 계산기 ${HT.calcs.length}개`), q);
+    side.append(HT.el('a', { class: 'logo', href: '#/' }, '한손도구'), HT.el('p', { class: 'tagline' }, `계산기 ${HT.calcs.length}개 · 2026년 기준`), q);
     HT.cats.forEach(cat => { const list = HT.calcs.filter(c => c.cat === cat); if (!list.length) return; const box = HT.el('div', { class: 'cat', 'data-cat': cat }); box.append(HT.el('h4', {}, cat)); list.forEach(c => box.append(HT.el('a', { href: '#/' + c.id, 'data-id': c.id }, c.name))); side.append(box); });
     q.addEventListener('input', () => { const s = q.value.trim().toLowerCase(); side.querySelectorAll('.cat').forEach(box => { let any = false; box.querySelectorAll('a').forEach(a => { const hit = !s || a.textContent.toLowerCase().includes(s) || (HT.byId(a.dataset.id)?.keywords || '').includes(s); a.classList.toggle('hidden', !hit); any = any || hit; }); box.classList.toggle('hidden', !any); }); });
   }

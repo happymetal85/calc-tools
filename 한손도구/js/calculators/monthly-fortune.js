@@ -35,7 +35,7 @@
   const monthPillar = (y, m) => { const yy = m === 1 ? y - 1 : y; const ys = ((yy - 4) % 10 + 10) % 10; const b = m % 12; return { stem: ((ys % 5) * 2 + b) % 10, branch: b, yearStem: ys, yearBranch: ((yy - 4) % 12 + 12) % 12 }; };
 
   HT.register({
-    id: 'monthly-fortune', cat: '유용한도구', order: 0.3, original: false, name: '이달의 운세', keywords: '이달의운세 월운 월간운세 다음달 운세 길일 좋은날 월건',
+    id: 'monthly-fortune', cat: '유용한도구', order: 0.3, name: '이달의 운세', keywords: '이달의운세 월운 월간운세 다음달 운세 길일 좋은날 월건',
     desc: '생년월일로 이번 달과 다음 달의 월운을 봅니다. 총운과 5개 분야, 주별 흐름, 이달의 좋은 날과 조심할 날(날마다 일진과 띠의 합·충으로 판정), 이달의 키워드와 조언을 보여 줍니다.',
     note: '운세는 재미로 보는 내용입니다. 달의 기운(월건)은 절기 기준 월주를 달력의 달에 맞춘 것이고(9월 = 유월), 좋은 날·조심할 날은 그날 일진의 지지와 띠의 육합·삼합·충 관계에 생년월일로 정해지는 편차를 더해 고릅니다. 같은 사람은 같은 달에 언제 봐도 같은 결과가 나오며, 입력한 정보는 이 브라우저 안에만 저장됩니다.',
     render(root) {
